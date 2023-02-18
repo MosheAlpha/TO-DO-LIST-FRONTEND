@@ -1,21 +1,3 @@
-// import React from 'react';
-// import { NavLink } from 'react-router-dom';
-
-// export default function NavBar() {
-//     return (
-//         <nav>
-//             <ul>
-//                 <li>
-//                     <NavLink to="/">Home</NavLink>
-//                 </li>
-//                 <li>
-//                     <NavLink to="/login">Login</NavLink>
-//                 </li>
-//             </ul>
-//         </nav>
-//     );
-// }
-
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -29,7 +11,10 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
+import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
+import Badge from '@mui/material/Badge';
+import MailIcon from '@mui/icons-material/Mail';
+import selfie from '../Images/selfie.jpg'
 
 const pages = ['Home', 'Login', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -57,7 +42,7 @@ function ResponsiveAppBar() {
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                    <PlaylistAddCheckIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
                     <Typography
                         variant="h6"
                         noWrap
@@ -112,7 +97,6 @@ function ResponsiveAppBar() {
                             ))}
                         </Menu>
                     </Box>
-                    <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
                     <Typography
                         variant="h5"
                         noWrap
@@ -129,7 +113,7 @@ function ResponsiveAppBar() {
                             textDecoration: 'none',
                         }}
                     >
-                        LOGO
+                        TO-DO-LIST
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
@@ -142,11 +126,13 @@ function ResponsiveAppBar() {
                             </Button>
                         ))}
                     </Box>
-
                     <Box sx={{ flexGrow: 0 }}>
+                        <Badge color="secondary" badgeContent={99} max={50} sx={{mx: 3}}>
+                            <MailIcon />
+                        </Badge>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                <Avatar alt="Remy Sharp" src={selfie} />
                             </IconButton>
                         </Tooltip>
                         <Menu
