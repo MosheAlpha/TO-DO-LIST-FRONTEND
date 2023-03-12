@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import List from '../Components/List'
 import TodoList from '../Components/Tasks-List';
+import AnotherList from '../Components/AnotherList'
 
 export default function Home() {
     const [tasks, setTasks] = useState([]);
@@ -57,13 +58,14 @@ export default function Home() {
     // const { pathname } = useLocation();
     return (
         <div>
+            <AnotherList/>
             {isLoading ? (
                 <p>Loading tasks...</p>
             ) : (
                 <div>
                     <h2>Tasks</h2>
-                    <TodoList/>
-                    <List></List>
+                    {/* <TodoList/>
+                    <List/> */}
                     
                     <ul>
                         {tasks && tasks.map((task) => (

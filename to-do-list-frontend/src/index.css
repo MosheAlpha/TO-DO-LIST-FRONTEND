@@ -139,3 +139,112 @@ ul li a.active {
   width: 100%;
   background-color: #fff;
 }
+
+/* Footer styles */
+
+footer {
+  background-color: #eee;
+  color: #333;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-description {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.footer-search {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.footer-search input {
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #ccc;
+}
+
+.footer-links {
+  flex: 1;
+  text-align: right;
+}
+
+.footer-links ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-links li {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.footer-links a {
+  color: #333;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.footer-links a:hover {
+  color: #007bff;
+}
+
+/* Responsive styles */
+
+@media screen and (max-width: 768px) {
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-description,
+  .footer-search,
+  .footer-links {
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .footer-links {
+    text-align: left;
+  }
+
+  .footer-links ul {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .footer-links li {
+    margin-left: 0;
+    margin-right: 20px;
+    margin-bottom: 10px;
+  }
+}
+
+
+/* TaskList styles */
+
+.root {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 360px;
+}
+
+.divider {
+  margin: 8px 0;
+}
+
+.MuiListItemText-primary {
+  font-weight: bold;
+}
+
+.MuiListItemText-secondary {
+  color: #666;
+}
