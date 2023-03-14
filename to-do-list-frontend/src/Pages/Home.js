@@ -58,15 +58,34 @@ export default function Home() {
     // const { pathname } = useLocation();
     return (
         <div>
-            <AnotherList/>
+            {/* <AnotherList />
+            <div>end of first</div>
+            <TodoList />
+            <div>end of second</div> */}
+
             {isLoading ? (
                 <p>Loading tasks...</p>
             ) : (
                 <div>
-                    <h2>Tasks</h2>
-                    {/* <TodoList/>
-                    <List/> */}
-                    
+                    {console.log(isLoading, tasks)}
+                    <div className='home-section' style={{ height: '100vh' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '20px 0 200px' }}>
+                            {!tasks || tasks == [] ? (
+                                <p>You don't have tasks yet! Create your first tasks below!</p>
+                            ) : (
+                                <List tasks={tasks} />
+                                
+                            )}
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
                     <ul>
                         {tasks && tasks.map((task) => (
                             <li key={task._id}>

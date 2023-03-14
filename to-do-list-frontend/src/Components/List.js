@@ -8,7 +8,7 @@ import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import CommentIcon from '@mui/icons-material/Comment';
 
-export default function CheckboxList() {
+export default function CheckboxList(props) {
     const [checked, setChecked] = React.useState([0]);
 
     const handleToggle = (value) => () => {
@@ -25,35 +25,38 @@ export default function CheckboxList() {
     };
 
     return (
-        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            {[0, 1, 2, 3].map((value) => {
-                const labelId = `checkbox-list-label-${value}`;
+        <>
+            <h2>Tasks</h2>
+            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                {props.tasks.map((task, index) => {
+                    const labelId = `checkbox-list-label-${index}`;
 
-                return (
-                    <ListItem
-                        key={value}
-                        secondaryAction={
-                            <IconButton edge="end" aria-label="comments">
-                                <CommentIcon />
-                            </IconButton>
-                        }
-                        disablePadding
-                    >
-                        <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
-                            <ListItemIcon>
-                                <Checkbox
-                                    edge="start"
-                                    checked={checked.indexOf(value) !== -1}
-                                    tabIndex={-1}
-                                    disableRipple
-                                    inputProps={{ 'aria-labelledby': labelId }}
-                                />
-                            </ListItemIcon>
-                            <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
-                        </ListItemButton>
-                    </ListItem>
-                );
-            })}
-        </List>
+                    return (
+                        <ListItem
+                            key={index}
+                            secondaryAction={
+                                <IconButton edge="end" aria-label="comments">
+                                    <CommentIcon />
+                                </IconButton>
+                            }
+                            disablePadding
+                        >
+                            <ListItemButton role={undefined} onClick={handleToggle(index)} dense>
+                                <ListItemIcon>
+                                    <Checkbox
+                                        edge="start"
+                                        checked={checked.indexOf(index) !== -1}
+                                        tabIndex={-1}
+                                        disableRipple
+                                        inputProps={{ 'aria-labelledby': labelId }}
+                                    />
+                                </ListItemIcon>
+                                <ListItemText id={labelId} primary={`${task.name} , tasks number ${index + 1}`} />
+                            </ListItemButton>
+                        </ListItem>
+                    );
+                })}
+            </List>
+        </>
     );
 }

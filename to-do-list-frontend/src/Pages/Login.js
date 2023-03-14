@@ -123,6 +123,11 @@ export default function SignInSide() {
                         <Typography component="h1" variant="h5">
                             Sign in
                         </Typography>
+                        <Typography component="p" variant="p">
+                            For tests use: <br/>
+                            email: admin@admin.com <br/>
+                            password: admin
+                        </Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                             <TextField
                                 margin="normal"
