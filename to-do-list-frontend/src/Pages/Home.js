@@ -4,12 +4,14 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import List from '../Components/List'
 import TodoList from '../Components/Tasks-List';
 import AnotherList from '../Components/AnotherList'
+import NewTaskForm from '../Components/NewTaskForm';
 
 export default function Home() {
     const [tasks, setTasks] = useState([]);
     const [newTask, setNewTask] = useState({ name: '', description: '' });
     const [isLoading, setIsLoading] = useState(true);
-    const serverBaseUrl = "http://localhost:5000/"
+    const serverBaseUrl = "http://localhost:5000/";
+    const token = JSON.parse(localStorage.getItem('accessToken'));
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -43,18 +45,23 @@ export default function Home() {
         setNewTask({ ...newTask, [event.target.name]: event.target.value });
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const handleSubmit = (task) => {
         axios
-            .post(serverBaseUrl + 'api/tasks', newTask)
+            .post(serverBaseUrl + 'api/tasks', {
+                headers: {
+                    Authorization: "JWT " + token,
+                }
+            }, task)
             .then((res) => {
+                console.log(res.data)
                 setTasks([...tasks, res.data.task]);
-                setNewTask({ name: '', description: '' });
             })
             .catch((err) => {
                 console.error(err);
             });
     };
+
+    
     // const { pathname } = useLocation();
     return (
         <div>
@@ -63,6 +70,8 @@ export default function Home() {
             <TodoList />
             <div>end of second</div> */}
 
+            <NewTaskForm onSubmit={handleSubmit}/>
+            
             {isLoading ? (
                 <p>Loading tasks...</p>
             ) : (
@@ -73,8 +82,10 @@ export default function Home() {
                             {!tasks || tasks == [] ? (
                                 <p>You don't have tasks yet! Create your first tasks below!</p>
                             ) : (
-                                <List tasks={tasks} />
-                                
+                                <>
+                                    <List tasks={tasks} />
+                                </>
+
                             )}
                         </div>
                     </div>

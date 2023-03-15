@@ -68,8 +68,8 @@ export default function SignInSide() {
         // }
 
         try {
-            axios.post(serverBaseUrl + 'auth/signIn', { 
-                email: email.replace(/\s+/g, ''), 
+            axios.post(serverBaseUrl + 'auth/signIn', {
+                email: email.replace(/\s+/g, ''),
                 password: password.replace(/\s+/g, '')
             }).then((response) => {
                 const { data } = response;
@@ -124,8 +124,8 @@ export default function SignInSide() {
                             Sign in
                         </Typography>
                         <Typography component="p" variant="p">
-                            For tests use: <br/>
-                            email: admin@admin.com <br/>
+                            For tests use: <br />
+                            email: admin@admin.com <br />
                             password: admin
                         </Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
