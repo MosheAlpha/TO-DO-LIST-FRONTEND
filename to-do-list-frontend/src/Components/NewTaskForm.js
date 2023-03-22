@@ -20,6 +20,7 @@ const NewTaskForm = ({ onSubmit }) => {
     const [completed, setCompleted] = useState(false);
     const [priority, setPriority] = useState(0);
     const [labels, setLabels] = useState([]);
+    const [selectedLabels, setSelectedLabels] = React.useState([]);
     const serverBaseUrl = "http://localhost:5000/";
     const token = JSON.parse(localStorage.getItem('accessToken'));
 
@@ -62,15 +63,22 @@ const NewTaskForm = ({ onSubmit }) => {
         setCompleted(event.target.checked);
     };
 
+    const handleLabelsChange = (labels) => {
+        setSelectedLabels(labels);
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const newTask = {
             taskName,
             description,
+            completed,
             dueDate,
             priority,
-            completed,
+            labels: selectedLabels
         };
+        console.log(newTask)
+
         onSubmit(newTask);
         setTaskName('');
         setDescription('');
@@ -139,7 +147,7 @@ const NewTaskForm = ({ onSubmit }) => {
                         ))}
                     </Select>
                 </FormControl>
-                <LabelSelect labels={labels}/>
+                <LabelSelect labels={labels} selectedLabels={selectedLabels} handleLabelsChange={handleLabelsChange}/>
                 <FormControlLabel
                     control={
                         <Checkbox

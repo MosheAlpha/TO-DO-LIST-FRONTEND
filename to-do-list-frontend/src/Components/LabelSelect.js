@@ -8,6 +8,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
 
+//style of popup of labels to select
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -19,66 +20,49 @@ const MenuProps = {
     },
 };
 
-const names = [
-    'Oliver Hansen',
-    'Van Henry',
-    'April Tucker',
-    'Ralph Hubbard',
-    'Omar Alexander',
-    'Carlos Abbott',
-    'Miriam Wagner',
-    'Bradley Wilkerson',
-    'Virginia Andrews',
-    'Kelly Snyder',
-];
-
 function getStyles(label, theme) {
     return {
         fontWeight: theme.typography.fontWeightMedium,
-        backgroundColor: label.colorHex
+        color: label.colorHex
     };
 }
 
-export default function LabelSelect(props) {
+export default function LabelSelect({ handleLabelsChange, labels, selectedLabels }) {
     const theme = useTheme();
-    const [labels, setLabels] = React.useState([]);
 
     const handleChange = (event) => {
-        debugger
-        setLabels(event.target.value);
+        handleLabelsChange(event.target.value)
     };
 
     return (
-        <div>
-            <FormControl sx={{ m: 1, width: 300 }}>
-                <InputLabel id="demo-multiple-chip-labels">Label</InputLabel>
-                <Select
-                    labelId="demo-multiple-chip-labels"
-                    id="demo-multiple-chip"
-                    multiple
-                    value={labels}
-                    onChange={handleChange}
-                    input={<OutlinedInput id="select-multiple-chip" labels="Label" />}
-                    renderValue={(selected) => (
-                        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                            {selected.map((label) => (
-                                <Chip key={label} label={label} style={{ margin: 2 , color: labels.find(o => o.name === label)?.colorHex}} />
-                            ))}
-                        </div>
-                    )}
-                    MenuProps={MenuProps}
-                >
-                    {props.labels.map((label, index) => (
-                        <MenuItem
-                            key={index}
-                            value={label.name}
-                            style={getStyles(label, theme)}
-                        >
-                            {label.name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-        </div>
+        <FormControl sx={{ m: 1, width: 300 }}>
+            <InputLabel id="demo-multiple-chip-labels">Label</InputLabel>
+            <Select
+                labelId="demo-multiple-chip-labels"
+                id="demo-multiple-chip"
+                multiple
+                value={selectedLabels}
+                onChange={handleChange}
+                input={<OutlinedInput id="select-multiple-chip" labels="Label" />}
+                renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {selected.map((label) => (
+                            <Chip key={label} label={label} style={{ margin: 2, color: labels.find(o => o.name === label)?.colorHex }} />
+                        ))}
+                    </Box>
+                )}
+                MenuProps={MenuProps}
+            >
+                {labels.map((label, index) => (
+                    <MenuItem
+                        key={index}
+                        value={label.name}
+                        style={getStyles(label, theme)}
+                    >
+                        {label.name}
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
     );
 }
