@@ -8,6 +8,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
 
+
 //style of popup of labels to select
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -19,6 +20,9 @@ const MenuProps = {
         },
     },
 };
+
+
+
 
 function getStyles(label, theme) {
     return {
@@ -33,6 +37,8 @@ export default function LabelSelect({ handleLabelsChange, labels, selectedLabels
     const handleChange = (event) => {
         handleLabelsChange(event.target.value)
     };
+
+
 
     return (
         <FormControl sx={{ m: 1, width: 300 }}>

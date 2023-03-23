@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import CommentIcon from '@mui/icons-material/Comment';
 import AccordionTest from './AccordionTest';
 
-export default function CheckboxList(props) {
+export default function CheckboxList({tasks, labels}) {
     const [checked, setChecked] = React.useState([0]);
 
     const handleToggle = (value) => () => {
@@ -28,34 +28,7 @@ export default function CheckboxList(props) {
     return (
         <>
             <h2 style={{textAlign: 'center'}}>Tasks</h2>
-            <AccordionTest tasks={props.tasks}/>
+            <AccordionTest tasks={tasks} labels={labels}/>
         </>
     );
 }
-
-// completed
-
-// createdAt
-// : 
-// "2023-03-23T12:06:12.653Z"
-// description
-// : 
-// "first desc"
-// dueDate
-// : 
-// "2023-03-20T00:00:00.000Z"
-// labels
-// : 
-// ['Education']
-// priority
-// : 
-// null
-// taskName
-// : 
-// "first task"
-// updatedAt
-// : 
-// "2023-03-23T12:06:12.653Z"
-// userId
-// : 
-// "64108a11c31d99217b5e98e0"

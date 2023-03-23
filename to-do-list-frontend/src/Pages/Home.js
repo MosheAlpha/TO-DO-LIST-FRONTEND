@@ -6,9 +6,14 @@ import NewTaskForm from '../Components/NewTaskForm';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import MuiAlert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
 
 export default function Home() {
     const [tasks, setTasks] = useState([]);
+    const [labels, setLabels] = useState([]);
     const [newTask, setNewTask] = useState({ name: '', description: '' });
     const [isLoading, setIsLoading] = useState(true);
     const serverBaseUrl = "http://localhost:5000/";
@@ -21,22 +26,45 @@ export default function Home() {
             return;
         }
 
+        //Fetching all labels from DB
+        const fetchLabels = async () => {
+            let response = await axios
+                .get(serverBaseUrl + 'api/labels', {
+                    headers: {
+                        Authorization: "JWT " + token,
+                    }
+                })
+                .then((res) => {
+                    console.log(res.data)
+                    setLabels(res.data);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        };
+        fetchLabels();
+
+        //Fetching all tasks from DB
         setIsLoading(true);
-        axios
-            .get(serverBaseUrl + 'api/tasks', {
-                headers: {
-                    Authorization: "JWT " + token,
-                }
-            })
-            .then((res) => {
-                setTasks(res.data);
-                console.log(res.data)
-                setIsLoading(false);
-            })
-            .catch((err) => {
-                console.error(err);
-                setIsLoading(false);
-            });
+        const fetchTasks = async () => {
+            let response = await axios
+                .get(serverBaseUrl + 'api/tasks', {
+                    headers: {
+                        Authorization: "JWT " + token,
+                    }
+                })
+                .then((res) => {
+                    setTasks(res.data);
+                    console.log(res.data)
+                    setIsLoading(false);
+                })
+                .catch((err) => {
+                    console.error(err);
+                    setIsLoading(false);
+                });
+        }
+        fetchTasks();
+
     }, []);
 
 
@@ -44,8 +72,7 @@ export default function Home() {
         setNewTask({ ...newTask, [event.target.name]: event.target.value });
     };
 
-    const handleSubmit = (task) => {
-        debugger
+    const submitNewTask = (task) => {
         console.log(task, token)
         axios
             .post(serverBaseUrl + 'api/tasks', task, {
@@ -68,13 +95,13 @@ export default function Home() {
                 <p>Loading tasks...</p>
             ) : (
                 <Container maxWidth="md">
-                    <Box sx={{height: '100vh'}}>
+                    <Box>
                         {!tasks || tasks.length == 0 ? (
                             <p>You don't have tasks yet! Create your first tasks below!</p>
                         ) : (
-                            <List tasks={tasks} />
+                            <List tasks={tasks} labels={labels}/>
                         )}
-                        <NewTaskForm onSubmit={handleSubmit} />
+                        <NewTaskForm submitNewTask={submitNewTask} labels={labels}/>
 
                     </Box>
                 </Container>

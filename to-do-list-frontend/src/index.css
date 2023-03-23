@@ -37,7 +37,6 @@ ul li a.active {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   font-size: 1.5rem;
   background-color: #ffdab9;
   /* set a happy background color */

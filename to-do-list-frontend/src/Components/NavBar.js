@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import Badge from '@mui/material/Badge';
-import MailIcon from '@mui/icons-material/Mail';
+import AlarmIcon from '@mui/icons-material/Alarm';
 import selfie from '../Images/selfie.jpg'
 
 const pages = ['Home', 'Login', 'Blog'];
@@ -128,7 +128,7 @@ function ResponsiveAppBar() {
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
                         <Badge color="secondary" badgeContent={99} max={50} sx={{mx: 3}}>
-                            <MailIcon />
+                            <AlarmIcon />
                         </Badge>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
