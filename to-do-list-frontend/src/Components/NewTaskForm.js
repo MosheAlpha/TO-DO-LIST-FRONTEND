@@ -88,9 +88,9 @@ const NewTaskForm = ({ onSubmit }) => {
     };
 
     const priorityOptions = [
-        { label: 'Low', value: 1 },
-        { label: 'Medium', value: 2 },
-        { label: 'High', value: 3 },
+        { label: 'Low', value: 'Low' },
+        { label: 'Medium', value: 'Medium' },
+        { label: 'High', value: 'High' },
     ];
 
     return (

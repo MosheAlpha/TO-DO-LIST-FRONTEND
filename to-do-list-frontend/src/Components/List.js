@@ -7,6 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import CommentIcon from '@mui/icons-material/Comment';
+import AccordionTest from './AccordionTest';
 
 export default function CheckboxList(props) {
     const [checked, setChecked] = React.useState([0]);
@@ -26,37 +27,35 @@ export default function CheckboxList(props) {
 
     return (
         <>
-            <h2>Tasks</h2>
-            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                {props.tasks.map((task, index) => {
-                    const labelId = `checkbox-list-label-${index}`;
-
-                    return (
-                        <ListItem
-                            key={index}
-                            secondaryAction={
-                                <IconButton edge="end" aria-label="comments">
-                                    <CommentIcon />
-                                </IconButton>
-                            }
-                            disablePadding
-                        >
-                            <ListItemButton role={undefined} onClick={handleToggle(index)} dense>
-                                <ListItemIcon>
-                                    <Checkbox
-                                        edge="start"
-                                        checked={checked.indexOf(index) !== -1}
-                                        tabIndex={-1}
-                                        disableRipple
-                                        inputProps={{ 'aria-labelledby': labelId }}
-                                    />
-                                </ListItemIcon>
-                                <ListItemText id={labelId} primary={`${task.name} , tasks number ${index + 1}`} />
-                            </ListItemButton>
-                        </ListItem>
-                    );
-                })}
-            </List>
+            <h2 style={{textAlign: 'center'}}>Tasks</h2>
+            <AccordionTest tasks={props.tasks}/>
         </>
     );
 }
+
+// completed
+
+// createdAt
+// : 
+// "2023-03-23T12:06:12.653Z"
+// description
+// : 
+// "first desc"
+// dueDate
+// : 
+// "2023-03-20T00:00:00.000Z"
+// labels
+// : 
+// ['Education']
+// priority
+// : 
+// null
+// taskName
+// : 
+// "first task"
+// updatedAt
+// : 
+// "2023-03-23T12:06:12.653Z"
+// userId
+// : 
+// "64108a11c31d99217b5e98e0"

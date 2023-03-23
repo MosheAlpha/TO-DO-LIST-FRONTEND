@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import List from '../Components/List'
-import TodoList from '../Components/Tasks-List';
-import AnotherList from '../Components/AnotherList'
+import List from '../Components/List';
 import NewTaskForm from '../Components/NewTaskForm';
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 
 export default function Home() {
     const [tasks, setTasks] = useState([]);
@@ -15,10 +16,8 @@ export default function Home() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = JSON.parse(localStorage.getItem('accessToken'));
-
         if (!token) {
-            navigate('login')
+            navigate('login');
             return;
         }
 
@@ -30,7 +29,7 @@ export default function Home() {
                 }
             })
             .then((res) => {
-                setTasks(res.data.tasks);
+                setTasks(res.data);
                 console.log(res.data)
                 setIsLoading(false);
             })
@@ -46,12 +45,14 @@ export default function Home() {
     };
 
     const handleSubmit = (task) => {
+        debugger
+        console.log(task, token)
         axios
-            .post(serverBaseUrl + 'api/tasks', {
+            .post(serverBaseUrl + 'api/tasks', task, {
                 headers: {
                     Authorization: "JWT " + token,
                 }
-            }, task)
+            })
             .then((res) => {
                 console.log(res.data)
                 setTasks([...tasks, res.data.task]);
@@ -61,68 +62,22 @@ export default function Home() {
             });
     };
 
-    
-    // const { pathname } = useLocation();
     return (
         <div>
-            {/* <AnotherList />
-            <div>end of first</div>
-            <TodoList />
-            <div>end of second</div> */}
-
-            <NewTaskForm onSubmit={handleSubmit}/>
-            
             {isLoading ? (
                 <p>Loading tasks...</p>
             ) : (
-                <div>
-                    {console.log(isLoading, tasks)}
-                    <div className='home-section' style={{ height: '100vh' }}>
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '20px 0 200px' }}>
-                            {!tasks || tasks == [] ? (
-                                <p>You don't have tasks yet! Create your first tasks below!</p>
-                            ) : (
-                                <>
-                                    <List tasks={tasks} />
-                                </>
+                <Container maxWidth="md">
+                    <Box sx={{height: '100vh'}}>
+                        {!tasks || tasks.length == 0 ? (
+                            <p>You don't have tasks yet! Create your first tasks below!</p>
+                        ) : (
+                            <List tasks={tasks} />
+                        )}
+                        <NewTaskForm onSubmit={handleSubmit} />
 
-                            )}
-                        </div>
-                    </div>
-
-
-
-
-
-
-
-
-                    <ul>
-                        {tasks && tasks.map((task) => (
-                            <li key={task._id}>
-                                <h3>{task.name}</h3>
-                                <p>{task.description}</p>
-                            </li>
-                        ))}
-                    </ul>
-                    <form onSubmit={handleSubmit}>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Task name"
-                            value={newTask.name}
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="text"
-                            name="description"
-                            placeholder="Task description"
-                            value={newTask.description}
-                            onChange={handleChange}
-                        />
-                        <button type="submit">Add Task</button>
-                    </form>
-                </div>
+                    </Box>
+                </Container>
             )}
         </div>
     );

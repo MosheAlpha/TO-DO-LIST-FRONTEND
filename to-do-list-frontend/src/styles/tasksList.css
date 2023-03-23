@@ -1,0 +1,20 @@
+.task {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.task-first-data{
+    display: flex;
+}
+.task-due-date {
+    font-size: 16px;
+}
+
+.task-completed {
+    margin-right: 10px;
+}
+
+.task-priority {
+    font-size: 16px;
+}
