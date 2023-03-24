@@ -13,7 +13,8 @@ import {
     Paper,
     Grid,
     styled,
-    IconButton
+    IconButton,
+    Typography
 } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import LabelSelect from './LabelSelect';
@@ -25,71 +26,74 @@ const priorityOptions = [
 ];
 
 const NewTaskForm = ({ submitNewTask, labels }) => {
-    const [taskName, setTaskName] = useState('');
-    const [description, setDescription] = useState('');
-    const [dueDate, setDueDate] = useState('');
-    const [completed, setCompleted] = useState(false);
-    const [priority, setPriority] = useState(priorityOptions[0].value);
 
     const [selectedLabels, setSelectedLabels] = React.useState([]);
-    const serverBaseUrl = "http://localhost:5000/";
-    const token = JSON.parse(localStorage.getItem('accessToken'));
 
-    useEffect(() => {
-
-    }, []);
-
-    const handleTaskNameChange = (event) => {
-        setTaskName(event.target.value);
-    };
-
-    const handleDescriptionChange = (event) => {
-        setDescription(event.target.value);
-    };
-
-    const handleDueDateChange = (event) => {
-        setDueDate(event.target.value);
-    };
-
-    const handlePriorityChange = (event) => {
-        setPriority(event.target.value);
-    };
-
-    const handleCompletedChange = (event) => {
-        setCompleted(event.target.checked);
-    };
+    const [formValues, setFormValues] = React.useState({
+        taskName: {
+            value: '',
+            error: false,
+            errorMessage: 'You must enter a name'
+        },
+        description: {
+            value: "",
+            error: false,
+            errorMessage: 'You must enter a description'
+        },
+        dueDate: {
+            value: '',
+            error: false,
+            errorMessage: 'You must enter the end date'
+        },
+        priority: {
+            value: priorityOptions[0].value,
+            error: false,
+            errorMessage: 'You must choose the priority of the task'
+        }
+    })
 
     const handleLabelsChange = (labels) => {
         setSelectedLabels(labels);
     };
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({
+            ...formValues,
+            [name]: {
+                ...formValues[name],
+                value
+            }
+        })
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const newTask = {
-            taskName,
-            description,
-            completed,
-            dueDate,
-            priority,
+            taskName: formValues.taskName.value,
+            description: formValues.description.value,
+            dueDate: formValues.dueDate.value,
+            priority: formValues.priority.value,
+            completed: false,
             labels: selectedLabels
         };
 
         submitNewTask(newTask);
-        setTaskName('');
-        setDescription('');
-        setDueDate('');
-        setPriority('');
-        setCompleted(false);
+        //here need to reset formValues
     };
 
 
 
     return (
         <Paper elevation={6} >
-
             <Box sx={{ flexGrow: 1 }} mt={2} mb={2} bgcolor="#ffd0d047" p={3} component="form" onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
-                    <Grid item xs={6} >
+                    <Grid item xs={12} textAlign='center'>
+                        <Typography variant='h5'>
+                            New Task
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6} >
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -98,11 +102,13 @@ const NewTaskForm = ({ submitNewTask, labels }) => {
                             id="taskName"
                             label="Task Name"
                             name="taskName"
-                            value={taskName}
-                            onChange={handleTaskNameChange}
+                            onChange={handleChange}
+                            value={formValues.taskName.value}
+                            error={formValues.taskName.error}
+                            helpertext={formValues.taskName.error ? formValues.taskName.errorMessage : ''}
                         />
                     </Grid>
-                    <Grid item xs={6} >
+                    <Grid item xs={12} sm={6} >
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -110,11 +116,13 @@ const NewTaskForm = ({ submitNewTask, labels }) => {
                             id="description"
                             label="Description"
                             name="description"
-                            value={description}
-                            onChange={handleDescriptionChange}
+                            onChange={handleChange}
+                            value={formValues.description.value}
+                            error={formValues.description.error}
+                            helpertext={formValues.description.error ? formValues.description.errorMessage : ''}
                         />
                     </Grid>
-                    <Grid item xs={4} >
+                    <Grid item xs={12} sm={6} >
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -127,20 +135,24 @@ const NewTaskForm = ({ submitNewTask, labels }) => {
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                            value={dueDate}
-                            onChange={handleDueDateChange}
+                            onChange={handleChange}
+                            value={formValues.dueDate.value}
+                            error={formValues.dueDate.error}
+                            helpertext={formValues.dueDate.error ? formValues.dueDate.errorMessage : ''}
                         />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} sm={6} >
                         <FormControl variant="outlined" margin="normal" fullWidth>
                             <InputLabel id="priority-label">Priority</InputLabel>
                             <Select
                                 labelId="priority-label"
                                 id="priority"
-                                value={priority}
-                                defaultValue={priorityOptions[0]}
-                                onChange={handlePriorityChange}
                                 label="Priority"
+                                defaultValue={priorityOptions[0]}
+                                onChange={handleChange}
+                                value={formValues.priority.value}
+                                error={formValues.priority.error}
+                                helpertext={formValues.priority.error ? formValues.priority.errorMessage : ''}
                             >
                                 {priorityOptions.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
@@ -150,24 +162,10 @@ const NewTaskForm = ({ submitNewTask, labels }) => {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={4} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <FormControlLabel sx={{ ml: 0 }}
-                            control={
-                                <Checkbox
-                                    checked={completed}
-                                    onChange={handleCompletedChange}
-                                    name="completed"
-                                    color="primary"
-                                />
-                            }
-                            label="Completed"
-                        />
-                    </Grid>
-                    <Grid item xs={6} md={8}>
+                    <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center' }}>
                         <LabelSelect labels={labels} selectedLabels={selectedLabels} handleLabelsChange={handleLabelsChange} />
-
                     </Grid>
-                    <Grid item xs={6} md={8} style={{
+                    <Grid item xs={12} style={{
                         display: 'flex',
                         justifyContent: 'end',
                         alignItems: 'center'

@@ -41,7 +41,7 @@ export default function LabelSelect({ handleLabelsChange, labels, selectedLabels
 
 
     return (
-        <FormControl sx={{ m: 1, width: 300 }}>
+        <FormControl sx={{ width: '100%', marginTop: '10px'}}>
             <InputLabel id="demo-multiple-chip-labels">Label</InputLabel>
             <Select
                 labelId="demo-multiple-chip-labels"

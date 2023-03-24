@@ -89,7 +89,7 @@ export default function AccordionTest({ tasks, labels }) {
                                             <ListItemIcon>
                                                 <WbIncandescentIcon />
                                             </ListItemIcon>
-                                            <ListItemText primary={task.description} />
+                                            <ListItemText primary={task.description? task.description: "No description!"} />
                                             <Stack direction="row" spacing={1}>
                                                 <IconButton aria-label="delete">
                                                     <DeleteIcon color='#ed5959' />
