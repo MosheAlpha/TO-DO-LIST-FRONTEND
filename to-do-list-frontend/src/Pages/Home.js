@@ -11,6 +11,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import AlertPopup from '../Components/AlertPopup';
+import Loading from '../Components/Loading'
 
 export default function Home() {
     const [tasks, setTasks] = useState([]);
@@ -92,7 +93,7 @@ export default function Home() {
 
 
     const submitNewTask = (task) => {
-        if(task.taskName == "" || task.dueDate == ""){
+        if (task.taskName == "" || task.dueDate == "") {
             showAlertPopup("error", "Tasks didn't created. Fill all required fields first!")
             return
         }
@@ -105,7 +106,7 @@ export default function Home() {
             .then((res) => {
                 console.log(res.data)
                 setTasks([...tasks, res.data.task]);
-                showAlertPopup("success", "New Task created!" )
+                showAlertPopup("success", "New Task created!")
             })
             .catch((err) => {
                 console.error(err);
@@ -115,10 +116,11 @@ export default function Home() {
 
     return (
         <div>
+
             {isLoading ? (
-                <p>Loading tasks...</p>
+                <Loading open={isLoading} />
             ) : (
-                <Container maxWidth="md">
+                <Container maxWidth="md" style={{minHeight: '100vh'}}>
                     <Box>
                         {!tasks || tasks.length == 0 ? (
                             <p>You don't have tasks yet! Create your first tasks below!</p>
