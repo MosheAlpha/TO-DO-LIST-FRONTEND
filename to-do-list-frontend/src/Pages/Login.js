@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-
+import globals from '../globals';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -35,7 +35,6 @@ export default function SignInSide() {
     const [error, setError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-    const serverBaseUrl = "http://localhost:5000/";
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
@@ -68,7 +67,7 @@ export default function SignInSide() {
         // }
 
         try {
-            axios.post(serverBaseUrl + 'auth/signIn', {
+            axios.post(globals.apiUrl + 'auth/signIn', {
                 email: email.replace(/\s+/g, ''),
                 password: password.replace(/\s+/g, '')
             }).then((response) => {

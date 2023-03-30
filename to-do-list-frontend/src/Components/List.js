@@ -24,6 +24,9 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import AlertPopup from '../Components/AlertPopup';
+import axios from 'axios';
+import globals from '../globals';
 
 
 import '../styles/tasksList.css';
@@ -57,7 +60,7 @@ const ListItemStyle = styled('li')(({ theme }) => ({
 }));
 
 
-export default function CheckboxList({ tasks, labels }) {
+export default function CheckboxList({ tasks, labels, deleteTask, updateTask }) {
     const [checked, setChecked] = React.useState([0]);
     const [isOpenCollapse, setIsOpenCollapse] = React.useState(Array(tasks.length).fill(false));
 
@@ -77,6 +80,11 @@ export default function CheckboxList({ tasks, labels }) {
 
         setChecked(newChecked);
     };
+
+    const handleDelete = (id) => {
+        setIsOpenCollapse(Array(tasks.length).fill(false));
+        deleteTask(id);
+    }
 
     return (
         <>
@@ -106,10 +114,10 @@ export default function CheckboxList({ tasks, labels }) {
                                                 </ListItemIcon>
                                                 <ListItemText primary={task.description ? task.description : "No description!"} />
                                                 <Stack direction="row" spacing={1}>
-                                                    <IconButton aria-label="delete">
+                                                    <IconButton aria-label="delete" onClick={() => handleDelete(task._id)}>
                                                         <DeleteIcon color='#ed5959' />
                                                     </IconButton>
-                                                    <IconButton color="secondary" aria-label="add an alarm">
+                                                    <IconButton color="secondary" aria-label="add an alarm" onClick={() => updateTask(task._id)}>
                                                         <EditIcon color='#8b8b86' />
                                                     </IconButton>
                                                 </Stack>

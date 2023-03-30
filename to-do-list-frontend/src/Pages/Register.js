@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import globals from '../globals';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
@@ -38,7 +39,6 @@ export default function SignUp() {
     const [usernameError, setUsernameError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-    const serverBaseUrl = "http://localhost:5000/";
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
@@ -95,7 +95,7 @@ export default function SignUp() {
         }
 
         try {
-            axios.post(serverBaseUrl + 'auth/register', {
+            axios.post(globals.apiUrl + 'auth/register', {
                 firstName: firstNameInput,
                 lastName: lastNameInput,
                 username: usernameInput,

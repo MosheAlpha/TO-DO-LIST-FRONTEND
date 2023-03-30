@@ -7,11 +7,11 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 const alertTypes = ["error", "warning", "info", "success"];
 
-export default function AlertPopup({ type }) {
+export default function AlertPopup({ id, snackbar }) {
     const [open, setOpen] = React.useState(false);
 
     React.useEffect(() => {
-        if (type) setOpen(true)
+        if (snackbar) setOpen(true)
         else setOpen(false)
     }, []);
 
@@ -22,9 +22,9 @@ export default function AlertPopup({ type }) {
     };
 
     return (
-        <Snackbar open={open} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
-            <Alert onClose={handleClose} severity={type.status} sx={{ width: '100%' }}>
-                {type.text}
+        <Snackbar open={open} autoHideDuration={4000} onClose={() => handleClose(id)} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+            <Alert onClose={handleClose} severity={snackbar.severity} sx={{ width: '100%' }}>
+                {snackbar.message}
             </Alert>
         </Snackbar>
     );

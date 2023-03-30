@@ -11,7 +11,8 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import AlertPopup from '../Components/AlertPopup';
-import Loading from '../Components/Loading'
+import Loading from '../Components/Loading';
+import globals from '../globals';
 
 export default function Home() {
     const [tasks, setTasks] = useState([]);
@@ -20,23 +21,33 @@ export default function Home() {
     const [isLoading, setIsLoading] = useState(true);
     const [showAlert, setShowAlert] = useState(false);
     const [alertType, setAlertType] = useState(null);
-    const serverBaseUrl = "http://localhost:5000/";
-    const token = JSON.parse(localStorage.getItem('accessToken'));
+    const [snackbars, setSnackbars] = useState([]);
     const navigate = useNavigate();
 
 
+    const handleSnackbarClose = (id) => {
+        setSnackbars(snackbars.filter((snackbar) => snackbar.id !== id));
+    };
 
-    const showAlertPopup = (status = "success", text = "") => {
-        setShowAlert(true);
-        setAlertType({ status, text });
-        setTimeout(() => {
-            setShowAlert(false);
-            setAlertType(null);
-        }, "3000");
-    }
+    const showSnackbar = (severity, message) => {
+        const newSnackbar = {
+            id: Date.now(),
+            message,
+            severity,
+        };
+        setSnackbars([...snackbars, newSnackbar]);
+        // setTimeout(() => {
+        //     setSnackbars(snackbars.filter((snackbar) => snackbar.id !== newSnackbar.id));
+        // }, "3000");
+    };
+
+    // const showSnackbar = (status = "success", text = "") => {
+    //     setShowAlert(true);
+    //     setAlertType({ status, text });
+    // }
 
     useEffect(() => {
-        if (!token) {
+        if (!globals.token) {
             navigate('login');
             return;
         }
@@ -44,19 +55,19 @@ export default function Home() {
         //Fetching all labels from DB
         const fetchLabels = async () => {
             let response = await axios
-                .get(serverBaseUrl + 'api/labels', {
+                .get(globals.apiUrl + 'api/labels', {
                     headers: {
-                        Authorization: "JWT " + token,
+                        Authorization: "JWT " + globals.token,
                     }
                 })
                 .then((res) => {
                     console.log(res.data)
                     setLabels(res.data);
-                    showAlertPopup("success", "All labels fetched!")
+                    showSnackbar("success", "All labels fetched!")
                 })
                 .catch((err) => {
                     console.error(err);
-                    showAlertPopup("error", "Labels didn't fetched. Try to login again!")
+                    showSnackbar("error", "Labels didn't fetched. Try to login again!")
                 });
         };
         fetchLabels();
@@ -65,21 +76,21 @@ export default function Home() {
         setIsLoading(true);
         const fetchTasks = async () => {
             let response = await axios
-                .get(serverBaseUrl + 'api/tasks', {
+                .get(globals.apiUrl + 'api/tasks', {
                     headers: {
-                        Authorization: "JWT " + token,
+                        Authorization: "JWT " + globals.token,
                     }
                 })
                 .then((res) => {
                     setTasks(res.data);
                     console.log(res.data)
                     setIsLoading(false);
-                    showAlertPopup("success", "All tasks fetched!")
+                    showSnackbar("success", "All tasks fetched!")
                 })
                 .catch((err) => {
                     console.error(err);
                     setIsLoading(false);
-                    showAlertPopup("error", "Tasks didn't fetched. Try to login again!")
+                    showSnackbar("error", "Tasks didn't fetched. Try to login again!")
                 });
         }
         fetchTasks();
@@ -94,41 +105,88 @@ export default function Home() {
 
     const submitNewTask = (task) => {
         if (task.taskName == "" || task.dueDate == "") {
-            showAlertPopup("error", "Tasks didn't created. Fill all required fields first!")
+            showSnackbar("error", "Tasks didn't created. Fill all required fields first!")
             return
         }
         axios
-            .post(serverBaseUrl + 'api/tasks', task, {
+            .post(globals.apiUrl + 'api/tasks', task, {
                 headers: {
-                    Authorization: "JWT " + token,
+                    Authorization: "JWT " + globals.token,
                 }
             })
             .then((res) => {
                 console.log(res.data)
                 setTasks([...tasks, res.data.task]);
-                showAlertPopup("success", "New Task created!")
+                showSnackbar("success", "New Task created!")
             })
             .catch((err) => {
                 console.error(err);
-                showAlertPopup("error", "Tasks didn't created. Try to send again or check the fiedls again!")
+                showSnackbar("error", "Tasks didn't created. Try to send again or check the fiedls again!")
             });
     };
 
+    const deleteTask = (id) => {
+        if (id) {
+            axios
+                .delete(globals.apiUrl + 'api/tasks/' + id, {
+                    headers: {
+                        Authorization: "JWT " + globals.token,
+                    }
+                })
+                .then((res) => {
+                    setTasks([...tasks].filter(obj => obj._id != id));
+                    showSnackbar("success", "Task deleted!")
+                })
+                .catch((err) => {
+                    console.error(err);
+                    showSnackbar("error", "Tasks didn't deleted. Try again!")
+                });
+        }
+    }
+
+    const updateTask = (id, updatedTask) => {
+        if (id) {
+            axios
+                .update(globals.apiUrl + 'api/tasks/' + id, updatedTask, {
+                    headers: {
+                        Authorization: "JWT " + globals.token,
+                    }
+                })
+                .then((res) => {
+                    const newState = tasks.map(obj => {
+                        if (obj._id === id) {
+                            return updatedTask;
+                        }
+                        return obj;
+                    });
+                    setTasks(newState);
+                    showSnackbar("success", "Task updated!")
+                })
+                .catch((err) => {
+                    console.error(err);
+                    showSnackbar("error", "Tasks didn't updated. Try again!")
+                });
+        }
+    }
+
     return (
         <div>
-
             {isLoading ? (
                 <Loading open={isLoading} />
             ) : (
-                <Container maxWidth="md" style={{minHeight: '100vh'}}>
+                <Container maxWidth="md" style={{ minHeight: '100vh' }}>
                     <Box>
                         {!tasks || tasks.length == 0 ? (
                             <p>You don't have tasks yet! Create your first tasks below!</p>
                         ) : (
-                            <List tasks={tasks} labels={labels} />
+                            <List tasks={tasks} labels={labels} deleteTask={deleteTask} updateTask={updateTask} />
                         )}
                         <NewTaskForm submitNewTask={submitNewTask} labels={labels} />
-                        {showAlert && <AlertPopup type={alertType} />}
+
+
+                        {snackbars && snackbars.map((snackbar) => (
+                            <AlertPopup key={snackbar.id} snackbar={snackbar} id={snackbar.id}/>
+                        ))}
                     </Box>
                 </Container>
             )}
