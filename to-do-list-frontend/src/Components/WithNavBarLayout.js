@@ -5,10 +5,11 @@ import React from 'react';
 
 export default function WithNavBarLayout() {
     return (
-    <>
-        <NavBar />
-        <Outlet />
-        <Footer />
-    </>
+        <>
+            <NavBar>
+                <Outlet />
+            </NavBar>
+            <Footer />
+        </>
     );
 };

@@ -17,17 +17,9 @@ import globals from '../globals';
 export default function Home() {
     const [tasks, setTasks] = useState([]);
     const [labels, setLabels] = useState([]);
-    const [newTask, setNewTask] = useState({ name: '', description: '' });
     const [isLoading, setIsLoading] = useState(true);
-    const [showAlert, setShowAlert] = useState(false);
-    const [alertType, setAlertType] = useState(null);
     const [snackbars, setSnackbars] = useState([]);
     const navigate = useNavigate();
-
-
-    const handleSnackbarClose = (id) => {
-        setSnackbars(snackbars.filter((snackbar) => snackbar.id !== id));
-    };
 
     const showSnackbar = (severity, message) => {
         const newSnackbar = {
@@ -36,15 +28,7 @@ export default function Home() {
             severity,
         };
         setSnackbars([...snackbars, newSnackbar]);
-        // setTimeout(() => {
-        //     setSnackbars(snackbars.filter((snackbar) => snackbar.id !== newSnackbar.id));
-        // }, "3000");
     };
-
-    // const showSnackbar = (status = "success", text = "") => {
-    //     setShowAlert(true);
-    //     setAlertType({ status, text });
-    // }
 
     useEffect(() => {
         if (!globals.token) {
@@ -96,12 +80,6 @@ export default function Home() {
         fetchTasks();
 
     }, []);
-
-
-    const handleChange = (event) => {
-        setNewTask({ ...newTask, [event.target.name]: event.target.value });
-    };
-
 
     const submitNewTask = (task) => {
         if (task.taskName == "" || task.dueDate == "") {
@@ -170,26 +148,23 @@ export default function Home() {
     }
 
     return (
-        <div>
+        <Container maxWidth="md" style={{ minHeight: '100vh', marginTop: '64px', textAlign: 'center', width: '100%' }}>
             {isLoading ? (
                 <Loading open={isLoading} />
             ) : (
-                <Container maxWidth="md" style={{ minHeight: '100vh' }}>
-                    <Box>
-                        {!tasks || tasks.length == 0 ? (
-                            <p>You don't have tasks yet! Create your first tasks below!</p>
-                        ) : (
-                            <List tasks={tasks} labels={labels} deleteTask={deleteTask} updateTask={updateTask} />
-                        )}
-                        <NewTaskForm submitNewTask={submitNewTask} labels={labels} />
+                <Box>
+                    {!tasks || tasks.length == 0 ? (
+                        <p>You don't have tasks yet! Create your first tasks below!</p>
+                    ) : (
+                        <List tasks={tasks} labels={labels} deleteTask={deleteTask} updateTask={updateTask} />
+                    )}
+                    <NewTaskForm submitNewTask={submitNewTask} labels={labels} />
 
-
-                        {snackbars && snackbars.map((snackbar) => (
-                            <AlertPopup key={snackbar.id} snackbar={snackbar} id={snackbar.id}/>
-                        ))}
-                    </Box>
-                </Container>
+                    {snackbars && snackbars.map((snackbar) => (
+                        <AlertPopup key={snackbar.id} snackbar={snackbar} id={snackbar.id} />
+                    ))}
+                </Box>
             )}
-        </div>
+        </Container>
     );
 }
