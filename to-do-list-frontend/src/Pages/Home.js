@@ -3,13 +3,15 @@ import axios from 'axios';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import List from '../Components/List';
 import NewTaskForm from '../Components/NewTaskForm';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import MuiAlert from '@mui/material/Alert';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
+import {
+    CssBaseline,
+    Box,
+    Container,
+    MuiAlert,
+    Stack,
+    Button,
+    Snackbar
+} from '@mui/material';
 import AlertPopup from '../Components/AlertPopup';
 import Loading from '../Components/Loading';
 import globals from '../globals';
