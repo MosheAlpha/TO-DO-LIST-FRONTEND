@@ -33,7 +33,8 @@ export default function Home() {
     };
 
     useEffect(() => {
-        if (!globals.token) {
+        if (!JSON.parse(localStorage.getItem('accessToken'))) {
+            localStorage.clear();
             navigate('login');
             return;
         }
@@ -43,7 +44,7 @@ export default function Home() {
             let response = await axios
                 .get(globals.apiUrl + 'api/labels', {
                     headers: {
-                        Authorization: "JWT " + globals.token,
+                        Authorization: "JWT " + JSON.parse(localStorage.getItem('accessToken')),
                     }
                 })
                 .then((res) => {
@@ -53,6 +54,11 @@ export default function Home() {
                 })
                 .catch((err) => {
                     console.error(err);
+                    debugger
+                    if(err.response.status == '403'){
+                        localStorage.clear();
+                        navigate('login');
+                    }
                     showSnackbar("error", "Labels didn't fetched. Try to login again!")
                 });
         };
@@ -64,7 +70,7 @@ export default function Home() {
             let response = await axios
                 .get(globals.apiUrl + 'api/tasks', {
                     headers: {
-                        Authorization: "JWT " + globals.token,
+                        Authorization: "JWT " + JSON.parse(localStorage.getItem('accessToken')),
                     }
                 })
                 .then((res) => {
@@ -91,7 +97,7 @@ export default function Home() {
         axios
             .post(globals.apiUrl + 'api/tasks', task, {
                 headers: {
-                    Authorization: "JWT " + globals.token,
+                    Authorization: "JWT " + JSON.parse(localStorage.getItem('accessToken')),
                 }
             })
             .then((res) => {
@@ -110,7 +116,7 @@ export default function Home() {
             axios
                 .delete(globals.apiUrl + 'api/tasks/' + id, {
                     headers: {
-                        Authorization: "JWT " + globals.token,
+                        Authorization: "JWT " + JSON.parse(localStorage.getItem('accessToken')),
                     }
                 })
                 .then((res) => {
@@ -129,7 +135,7 @@ export default function Home() {
             axios
                 .update(globals.apiUrl + 'api/tasks/' + id, updatedTask, {
                     headers: {
-                        Authorization: "JWT " + globals.token,
+                        Authorization: "JWT " + JSON.parse(localStorage.getItem('accessToken')),
                     }
                 })
                 .then((res) => {

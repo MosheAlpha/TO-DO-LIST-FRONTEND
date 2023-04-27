@@ -23,10 +23,14 @@ import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { TextField } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import AlertPopup from '../Components/AlertPopup';
 import axios from 'axios';
 import globals from '../globals';
+
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 
 
 import '../styles/tasksList.css';
@@ -40,8 +44,8 @@ const style = {
 const priorityColors = [
     {
         "name": "Low",
-        "colorName": "LightGrey",
-        "hexColor": "#D3D3D3"
+        "colorName": "Black",
+        "hexColor": "#626262"
     },
     {
         "name": "Medium",
@@ -98,9 +102,8 @@ export default function CheckboxList({ tasks, labels, deleteTask, updateTask }) 
                             >
                                 <List sx={style} component="nav" aria-label="mailbox folders">
                                     <ListItem>
-                                        <Checkbox {...label} icon={<FavoriteBorder />} id="task-completed" className="task-completed" checkedIcon={<Favorite />} style={{ color: priorityColors.find(o => o.name === task.priority)?.hexColor }} />
-                                        <ListItemText primary={task.taskName} secondary={task.dueDate} onClick={() => handleOpen(index)} sx={{ ':hover': { cursor: 'pointer' } }} />
-
+                                        <Checkbox {...label} icon={<RadioButtonUncheckedIcon />} id="task-completed" className="task-completed" checkedIcon={<RadioButtonCheckedIcon />} style={{ color: priorityColors.find(o => o.name === task.priority)?.hexColor }} />
+                                        <ListItemText primary={task.taskName} secondary={`${new Date(task.dueDate).getDate()}/${new Date(task.dueDate).getMonth() + 1}/${new Date(task.dueDate).getFullYear()}`} onClick={() => handleOpen(index)} sx={{ ':hover': { cursor: 'pointer' } }} />
                                         <IconButton color="primary" aria-label="open-collapse" component="label" onClick={() => handleOpen(index)} style={{ flexGrow: 0 }}>
                                             {isOpenCollapse[index] ? <ExpandLess /> : <ExpandMore />}
                                         </IconButton>

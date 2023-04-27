@@ -3,12 +3,11 @@ import NavBar from './NavBar';
 import Footer from './Footer';
 import React from 'react';
 
-export default function WithNavBarLayout() {
+export default function Layout() {
     return (
         <>
-            <NavBar>
-                <Outlet />
-            </NavBar>
+            <NavBar />
+            <Outlet />
             <Footer />
         </>
     );
